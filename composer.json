@@ -1,0 +1,30 @@
+{
+    "name": "nick-lai/associative-array",
+    "description": "Associative array",
+    "keywords": [
+        "associative",
+        "array",
+        "associative array"
+    ],
+    "homepage": "https://github.com/nick-lai/associative-array",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nick Lai",
+            "email": "resxc13579@gmail.com",
+            "homepage": "https://github.com/nick-lai"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "NickLai\\": "src"
+        }
+    },
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.2"
+    }
+}

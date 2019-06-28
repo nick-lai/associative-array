@@ -1,0 +1,583 @@
+# AssociativeArray
+
+
+AssociativeArray requires PHP >= 7.0.0
+
+[![Latest Stable Version](https://poser.pugx.org/nick-lai/associative-array/v/stable)](https://packagist.org/packages/nick-lai/associative-array) [![Total Downloads](https://poser.pugx.org/nick-lai/associative-array/downloads)](https://packagist.org/packages/nick-lai/associative-array) [![License](https://poser.pugx.org/nick-lai/associative-array/license)](https://packagist.org/packages/nick-lai/associative-array)
+
+# Table of Contents
+
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+    - [select()](#select)
+    - [where()](#where)
+    - [innerJoin()](#innerjoin)
+    - [leftJoin()](#leftjoin)
+    - [rightJoin()](#rightjoin)
+    - [orderBy()](#orderby)
+    - [groupBy()](#groupby)
+    - [first()](#first)
+    - [last()](#last)
+    - [count()](#count)
+    - [sum()](#sum)
+    - [avg()](#avg)
+    - [toArray()](#toarray)
+    - [Array Access](#array-access)
+    - [Traversable](#traversable)
+- [License](#license)
+
+
+## Installation
+
+```sh
+composer require nick-lai/associative-array
+```
+
+## Basic Usage
+
+### select()
+
+Get rows of selected columns.
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 30],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray->select(['id', 'price'])->toArray());
+var_export($associativeArray->select(['category', 'price'])->toArray());
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'id' => 1001,
+    'price' => 30,
+  ),
+  1 =>
+  array (
+    'id' => 1002,
+    'price' => 25,
+  ),
+  2 =>
+  array (
+    'id' => 1003,
+    'price' => 10,
+  ),
+)
+
+array (
+  0 =>
+  array (
+    'category' => 'C',
+    'price' => 30,
+  ),
+  1 =>
+  array (
+    'category' => 'A',
+    'price' => 25,
+  ),
+  2 =>
+  array (
+    'category' => 'B',
+    'price' => 10,
+  ),
+)
+```
+
+### where()
+
+Filter the rows using the given callback.
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 30],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+$result = $associativeArray->where(function ($row) {
+    return $row['price'] > 10;
+})->toArray();
+
+var_export($result);
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'id' => 1001,
+    'category' => 'C',
+    'price' => 30,
+  ),
+  1 =>
+  array (
+    'id' => 1002,
+    'category' => 'A',
+    'price' => 25,
+  ),
+)
+```
+
+### innerJoin()
+
+Inner join rows
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 30],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+    ['id' => 1004, 'category' => 'X', 'price' => 60],
+]);
+
+$categories = [
+    ['category' => 'A', 'desc' => 'A desc'],
+    ['category' => 'B', 'desc' => 'B desc'],
+    ['category' => 'C', 'desc' => 'C desc'],
+    ['category' => 'D', 'desc' => 'D desc'],
+];
+
+$result = $associativeArray->innerJoin($categories, function ($leftRow, $rightRow) {
+    return $leftRow['category'] === $rightRow['category'];
+})->toArray();
+
+var_export($result);
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'id' => 1001,
+    'category' => 'C',
+    'price' => 30,
+    'desc' => 'C desc',
+  ),
+  1 =>
+  array (
+    'id' => 1002,
+    'category' => 'A',
+    'price' => 25,
+    'desc' => 'A desc',
+  ),
+  2 =>
+  array (
+    'id' => 1003,
+    'category' => 'B',
+    'price' => 10,
+    'desc' => 'B desc',
+  ),
+)
+```
+
+### leftJoin()
+
+Left join rows
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 30],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+    ['id' => 1004, 'category' => 'X', 'price' => 60],
+]);
+
+$categories = [
+    ['category' => 'A', 'desc' => 'A desc'],
+    ['category' => 'B', 'desc' => 'B desc'],
+    ['category' => 'C', 'desc' => 'C desc'],
+    ['category' => 'D', 'desc' => 'D desc'],
+];
+
+$result = $associativeArray->leftJoin($categories, function ($leftRow, $rightRow) {
+    return $leftRow['category'] === $rightRow['category'];
+})->toArray();
+
+var_export($result);
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'id' => 1001,      
+    'category' => 'C', 
+    'price' => 30,     
+    'desc' => 'C desc',
+  ),
+  1 =>
+  array (
+    'id' => 1002,
+    'category' => 'A',
+    'price' => 25,
+    'desc' => 'A desc',
+  ),
+  2 =>
+  array (
+    'id' => 1003,
+    'category' => 'B',
+    'price' => 10,
+    'desc' => 'B desc',
+  ),
+  3 =>
+  array (
+    'id' => 1004,
+    'category' => 'X',
+    'price' => 60,
+    'desc' => NULL,
+  ),
+)
+```
+
+### rightJoin()
+
+Right join rows
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 30],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+    ['id' => 1004, 'category' => 'X', 'price' => 60],
+]);
+
+$categories = [
+    ['category' => 'A', 'desc' => 'A desc'],
+    ['category' => 'B', 'desc' => 'B desc'],
+    ['category' => 'C', 'desc' => 'C desc'],
+    ['category' => 'D', 'desc' => 'D desc'],
+];
+
+$result = $associativeArray->rightJoin($categories, function ($leftRow, $rightRow) {
+    return $leftRow['category'] === $rightRow['category'];
+})->toArray();
+
+var_export($result);
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'category' => 'A',
+    'desc' => 'A desc',
+    'id' => 1002,
+    'price' => 25,
+  ),
+  1 =>
+  array (
+    'category' => 'B',
+    'desc' => 'B desc',
+    'id' => 1003,
+    'price' => 10,
+  ),
+  2 =>
+  array (
+    'category' => 'C',
+    'desc' => 'C desc',
+    'id' => 1001,
+    'price' => 30,
+  ),
+  3 =>
+  array (
+    'category' => 'D',
+    'desc' => 'D desc',
+    'id' => NULL,
+    'price' => NULL,
+  ),
+)
+```
+
+### orderBy()
+
+Order by keys
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+$result = $associativeArray->orderBy(['price', 'category'], ['desc', 'asc'])->toArray();
+
+var_export($result);
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'id' => 1002,
+    'category' => 'A',
+    'price' => 25,
+  ),
+  1 =>
+  array (
+    'id' => 1003,
+    'category' => 'B',
+    'price' => 10,
+  ),
+  2 =>
+  array (
+    'id' => 1001,
+    'category' => 'C',
+    'price' => 10,
+  ),
+)
+```
+
+### groupBy()
+
+Groups an associative array by keys.
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'B', 'price' => 30],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 30],
+    ['id' => 1004, 'category' => 'A', 'price' => 30],
+]);
+
+$result = $associativeArray->groupBy(['category', 'price'])->toArray();
+
+var_export($result);
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'id' => 1001,
+    'category' => 'B',
+    'price' => 30,
+  ),
+  1 =>
+  array (
+    'id' => 1002,
+    'category' => 'A',
+    'price' => 25,
+  ),
+  2 =>
+  array (
+    'id' => 1004,
+    'category' => 'A',
+    'price' => 30,
+  ),
+)
+```
+
+### first()
+
+Return the first row
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray->first());
+```
+
+Result:
+
+```
+array (
+  'id' => 1001,
+  'category' => 'C',
+  'price' => 10,
+)
+```
+
+### last()
+
+Return the last row
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray->last());
+```
+
+Result:
+
+```
+array (
+  'id' => 1003,
+  'category' => 'B',
+  'price' => 10,
+)
+```
+
+### count()
+
+Count the number of rows in the associative array.
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray->count());
+```
+
+Result:
+
+```
+3
+```
+
+### sum()
+
+Get the sum of a given key.
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray->sum('price'));
+```
+
+Result:
+
+```
+45
+```
+
+### avg()
+
+Get the average value of a given key.
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray->avg('price'));
+```
+
+Result:
+
+```
+15
+```
+
+### toArray()
+
+Get the instance as an array.
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray->toArray());
+```
+
+Result:
+
+```
+array (
+  0 =>
+  array (
+    'id' => 1001,
+    'category' => 'C',
+    'price' => 10,
+  ),
+  1 =>
+  array (
+    'id' => 1002,
+    'category' => 'A',
+    'price' => 25,
+  ),
+  2 =>
+  array (
+    'id' => 1003,
+    'category' => 'B',
+    'price' => 10,
+  ),
+)
+```
+
+### Array Access
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+var_export($associativeArray[0]);
+```
+
+Result:
+
+```
+array (
+  'id' => 1001,
+  'category' => 'C',
+  'price' => 10,
+)
+```
+
+### Traversable
+
+```php
+$associativeArray = new AssociativeArray([
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+foreach ($associativeArray as $row) {
+    echo $row['category'] . PHP_EOL;
+}
+```
+
+Result:
+
+```
+C
+A
+B
+
+```
+
+## License
+
+AssociativeArray is released under the MIT Licence. See the bundled LICENSE file for details.
