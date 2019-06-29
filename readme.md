@@ -1,9 +1,15 @@
 # AssociativeArray
 
+[![Build Status](https://travis-ci.org/nick-lai/associative-array.svg?branch=master)](https://travis-ci.org/nick-lai/associative-array)
+[![codecov](https://codecov.io/gh/nick-lai/associative-array/branch/master/graph/badge.svg)](https://codecov.io/gh/nick-lai/associative-array)
+[![Maintainability](https://api.codeclimate.com/v1/badges/619cef82d3eba2ea735c/maintainability)](https://codeclimate.com/github/nick-lai/associative-array/maintainability)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nick-lai/associative-array/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/nick-lai/associative-array/?branch=master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/nick-lai/associative-array/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+
+[![PHP 7 ready](https://php7ready.timesplinter.ch/nick-lai/associative-array/master/badge.svg)](https://travis-ci.org/nick-lai/associative-array)
 [![Latest Stable Version](https://poser.pugx.org/nick-lai/associative-array/v/stable)](https://packagist.org/packages/nick-lai/associative-array)
 [![Total Downloads](https://poser.pugx.org/nick-lai/associative-array/downloads)](https://packagist.org/packages/nick-lai/associative-array)
 [![License](https://poser.pugx.org/nick-lai/associative-array/license)](https://packagist.org/packages/nick-lai/associative-array)
-[![Maintainability](https://api.codeclimate.com/v1/badges/619cef82d3eba2ea735c/maintainability)](https://codeclimate.com/github/nick-lai/associative-array/maintainability)
 
 # Table of Contents
 
