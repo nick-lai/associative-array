@@ -1,8 +1,5 @@
 # AssociativeArray
 
-
-AssociativeArray requires PHP >= 7.0.0
-
 [![Latest Stable Version](https://poser.pugx.org/nick-lai/associative-array/v/stable)](https://packagist.org/packages/nick-lai/associative-array)
 [![Total Downloads](https://poser.pugx.org/nick-lai/associative-array/downloads)](https://packagist.org/packages/nick-lai/associative-array)
 [![License](https://poser.pugx.org/nick-lai/associative-array/license)](https://packagist.org/packages/nick-lai/associative-array)
@@ -10,6 +7,7 @@ AssociativeArray requires PHP >= 7.0.0
 
 # Table of Contents
 
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
     - [select()](#select)
@@ -29,6 +27,9 @@ AssociativeArray requires PHP >= 7.0.0
     - [Traversable](#traversable)
 - [License](#license)
 
+## Requirements
+
+AssociativeArray requires PHP >= 7.0.0
 
 ## Installation
 
@@ -37,6 +38,112 @@ composer require nick-lai/associative-array
 ```
 
 ## Basic Usage
+
+```php
+use NickLai\AssociativeArray;
+
+$data = [
+    ['id' => 1001, 'category' => 'C', 'price' => 20],
+    ['id' => 1002, 'category' => 'B', 'price' => 15],
+    ['id' => 1003, 'category' => 'A', 'price' => 15],
+    ['id' => 1004, 'category' => 'A', 'price' => 25],
+    ['id' => 1005, 'category' => 'B', 'price' => 10],
+];
+
+$assciativeArray = new AssociativeArray($data);
+
+$priceBetween0and20Rows = $assciativeArray->where(function ($row) {
+    return 0 <= $row['price'] && $row['price'] <= 20;
+})->orderBy(['category', 'price']);
+
+$priceBetween15and25Rows = $assciativeArray->where(function ($row) {
+    return 15 <= $row['price'] && $row['price'] <= 25;
+})->orderBy(['category', 'price'], ['asc', 'desc']);
+
+echo "Price between 0 and 20:" . PHP_EOL;
+print_r($priceBetween0and20Rows->toArray());
+echo "count(): " . $priceBetween0and20Rows->count() . PHP_EOL;
+echo "sum('price'): " . $priceBetween0and20Rows->sum('price') . PHP_EOL . PHP_EOL;
+
+echo "Price between 15 and 25:" . PHP_EOL;
+print_r($priceBetween15and25Rows->toArray());
+echo "count(): " . $priceBetween15and25Rows->count() . PHP_EOL;
+echo "sum('price'): " . $priceBetween15and25Rows->sum('price');
+```
+
+Result:
+
+```
+Price between 0 and 20:
+Array
+(
+    [0] => Array
+        (
+            [id] => 1003   
+            [category] => A
+            [price] => 15  
+        )
+
+    [1] => Array
+        (
+            [id] => 1005   
+            [category] => B
+            [price] => 10  
+        )
+
+    [2] => Array
+        (
+            [id] => 1002
+            [category] => B
+            [price] => 15
+        )
+
+    [3] => Array
+        (
+            [id] => 1001
+            [category] => C
+            [price] => 20
+        )
+
+)
+count(): 4
+sum('price'): 60
+
+Price between 15 and 25:
+Array
+(
+    [0] => Array
+        (
+            [id] => 1004
+            [category] => A
+            [price] => 25
+        )
+
+    [1] => Array
+        (
+            [id] => 1003
+            [category] => A
+            [price] => 15
+        )
+
+    [2] => Array
+        (
+            [id] => 1002
+            [category] => B
+            [price] => 15
+        )
+
+    [3] => Array
+        (
+            [id] => 1001
+            [category] => C
+            [price] => 20
+        )
+
+)
+count(): 4
+sum('price'): 75
+```
 
 ### select()
 
