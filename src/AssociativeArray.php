@@ -156,7 +156,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
 
         $result = $this->rows;
 
-        usort($result, function ($a, $b) use ($keys, $key2Direction) {
+        usort($result, function($a, $b) use ($keys, $key2Direction) {
             foreach ($keys as $key) {
                 if ($cmpVal = $key2Direction[$key] === 'desc'
                         ? $b[$key] <=> $a[$key]
@@ -264,7 +264,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      */
     public function toArray()
     {
-        return array_map(function ($row) {
+        return array_map(function($row) {
             return $row instanceof self ? $row->toArray() : $row;
         }, $this->rows);
     }
@@ -344,6 +344,6 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
             return iterator_to_array($rows);
         }
 
-        return (array) $rows;
+        return (array)$rows;
     }
 }
