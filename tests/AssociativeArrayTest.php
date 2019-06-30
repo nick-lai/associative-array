@@ -5,6 +5,12 @@ namespace NickLai\AssociativeArray\Tests;
 use PHPUnit\Framework\TestCase;
 use NickLai\AssociativeArray;
 
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
+use ReflectionClass;
+use Traversable;
+
 class AssociativeArrayTest extends TestCase
 {
     public function testSelect()
@@ -230,13 +236,26 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1003, 'category' => 'B', 'price' => 10],
         ]);
 
+        $this->assertInstanceOf(ArrayAccess::class, $associativeArray);
+
         $this->assertEquals(
             ['id' => 1001, 'category' => 'C', 'price' => 10],
             $associativeArray[0]
         );
+
+        $associativeArray[] = ['id' => 1004, 'category' => 'D', 'price' => 50];
+
+        $this->assertTrue(isset($associativeArray[3]));
+        $this->assertEquals(4, count($associativeArray));
+        $this->assertEquals(1004, $associativeArray[3]['id']);
+
+        unset($associativeArray[3]);
+
+        $this->assertFalse(isset($associativeArray[3]));
+        $this->assertEquals(3, count($associativeArray));
     }
 
-    public function testTraversable()
+    public function testCountable()
     {
         $associativeArray = new AssociativeArray([
             ['id' => 1001, 'category' => 'C', 'price' => 10],
@@ -244,11 +263,113 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1003, 'category' => 'B', 'price' => 10],
         ]);
 
-        foreach ($associativeArray as $row) {
-            $this->assertEquals(['id' => 1001, 'category' => 'C', 'price' => 10], $row);
-            return;
-        }
+        $this->assertInstanceOf(Countable::class, $associativeArray);
+        $this->assertCount(3, $associativeArray);
+    }
 
-        $this->assertEquals(0, 1);
+    public function testTraversable()
+    {
+        $data = [
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+        ];
+
+        $associativeArray = new AssociativeArray($data);
+
+        $this->assertInstanceOf(Traversable::class, $associativeArray);
+
+        foreach ($associativeArray as $index => $row) {
+            $this->assertEquals($data[$index], $row);
+        }
+    }
+
+    public function testIterable()
+    {
+        $data = [
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+        ];
+
+        $associativeArray = new AssociativeArray($data);
+
+        $this->assertInstanceOf(ArrayIterator::class, $associativeArray->getIterator());
+        $this->assertEquals($data, $associativeArray->getIterator()->getArrayCopy());
+    }
+
+    public function testArrayAccessOffsetExists()
+    {
+        $associativeArray = new AssociativeArray([
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+        ]);
+
+        $this->assertTrue($associativeArray->offsetExists(0));
+        $this->assertTrue($associativeArray->offsetExists(1));
+        $this->assertFalse($associativeArray->offsetExists(1000));
+    }
+
+    public function testArrayAccessOffsetGet()
+    {
+        $data = [
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+        ];
+
+        $associativeArray = new AssociativeArray($data);
+
+        $this->assertEquals($data[0], $associativeArray->offsetGet(0));
+        $this->assertEquals($data[1], $associativeArray->offsetGet(1));
+        $this->assertEquals($data[2], $associativeArray->offsetGet(2));
+    }
+
+    public function testArrayAccessOffsetSet()
+    {
+        $data = [
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+        ];
+
+        $associativeArray = new AssociativeArray($data);
+
+        $row = ['id' => 1004, 'category' => 'D', 'price' => 50];
+
+        $associativeArray->offsetSet(0, $row);
+        $this->assertEquals($row, $associativeArray->first());
+
+        $associativeArray->offsetSet(null, $row);
+        $this->assertEquals($row, $associativeArray->last());
+    }
+
+    public function testArrayAccessOffsetUnset()
+    {
+        $associativeArray = new AssociativeArray([
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+        ]);
+
+        $associativeArray->offsetUnset(2);
+        $this->assertFalse(isset($associativeArray[2]));
+    }
+
+    public function testGetAssociativeRows()
+    {
+        $associativeArray = new AssociativeArray;
+        $class = new ReflectionClass($associativeArray);
+        $method = $class->getMethod('getAssociativeRows');
+        $method->setAccessible(true);
+
+        $data = [
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+        ];
+
+        $this->assertSame($data, $method->invokeArgs($associativeArray, [new AssociativeArray($data)]));
+        $this->assertSame($data, $method->invokeArgs($associativeArray, [$data]));
     }
 }
