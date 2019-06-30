@@ -26,6 +26,12 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1002, 'price' => 25],
             ['id' => 1003, 'price' => 10],
         ], $associativeArray->select(['id', 'price'])->toArray());
+
+        $this->assertEquals([
+            ['category' => 'C'],
+            ['category' => 'A'],
+            ['category' => 'B'],
+        ], $associativeArray->select('category')->toArray());
     }
 
     public function testWhere()
@@ -127,13 +133,22 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1001, 'category' => 'C', 'price' => 10],
             ['id' => 1002, 'category' => 'A', 'price' => 25],
             ['id' => 1003, 'category' => 'B', 'price' => 10],
+            ['id' => 1004, 'category' => 'C', 'price' => 10],
         ]);
 
         $this->assertEquals([
             ['id' => 1002, 'category' => 'A', 'price' => 25],
             ['id' => 1003, 'category' => 'B', 'price' => 10],
             ['id' => 1001, 'category' => 'C', 'price' => 10],
+            ['id' => 1004, 'category' => 'C', 'price' => 10],
         ], $associativeArray->orderBy(['price', 'category'], ['desc', 'asc'])->toArray());
+
+        $this->assertEquals([
+            ['id' => 1004, 'category' => 'C', 'price' => 10],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1001, 'category' => 'C', 'price' => 10],
+        ], $associativeArray->orderBy('id', 'desc')->toArray());
     }
 
     public function testGroupBy()
@@ -150,6 +165,11 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1002, 'category' => 'A', 'price' => 25],
             ['id' => 1004, 'category' => 'A', 'price' => 30],
         ], $associativeArray->groupBy(['category', 'price'])->toArray());
+
+        $this->assertEquals([
+            ['id' => 1001, 'category' => 'B', 'price' => 30],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+        ], $associativeArray->groupBy('category')->toArray());
     }
 
     public function testFirst()
@@ -164,6 +184,8 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1001, 'category' => 'C', 'price' => 10],
             $associativeArray->first()
         );
+
+        $this->assertNull((new AssociativeArray())->first());
     }
 
     public function testLast()
@@ -178,6 +200,8 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1003, 'category' => 'B', 'price' => 10],
             $associativeArray->last()
         );
+
+        $this->assertNull((new AssociativeArray())->last());
     }
 
     public function testCount()
@@ -369,7 +393,9 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1003, 'category' => 'B', 'price' => 10],
         ];
 
-        $this->assertSame($data, $method->invokeArgs($associativeArray, [new AssociativeArray($data)]));
         $this->assertSame($data, $method->invokeArgs($associativeArray, [$data]));
+        $this->assertSame($data, $method->invokeArgs($associativeArray, [new AssociativeArray($data)]));
+        $this->assertSame($data, $method->invokeArgs($associativeArray, [(new AssociativeArray($data))->getIterator()]));
+        $this->assertSame($data, $method->invokeArgs($associativeArray, [(object) $data]));
     }
 }
