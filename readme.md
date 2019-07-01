@@ -1,14 +1,16 @@
+![banner](https://user-images.githubusercontent.com/7104395/60439675-c7300400-9c45-11e9-846a-e0819aeb74dd.png)
+
 # AssociativeArray
 
+[![PHP 7 ready](https://php7ready.timesplinter.ch/nick-lai/associative-array/master/badge.svg)](https://travis-ci.org/nick-lai/associative-array)
 [![Build Status](https://travis-ci.org/nick-lai/associative-array.svg?branch=master)](https://travis-ci.org/nick-lai/associative-array)
 [![codecov](https://codecov.io/gh/nick-lai/associative-array/branch/master/graph/badge.svg)](https://codecov.io/gh/nick-lai/associative-array)
 [![Maintainability](https://api.codeclimate.com/v1/badges/619cef82d3eba2ea735c/maintainability)](https://codeclimate.com/github/nick-lai/associative-array/maintainability)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nick-lai/associative-array/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/nick-lai/associative-array/?branch=master)
-
-[![PHP 7 ready](https://php7ready.timesplinter.ch/nick-lai/associative-array/master/badge.svg)](https://travis-ci.org/nick-lai/associative-array)
 [![Latest Stable Version](https://poser.pugx.org/nick-lai/associative-array/v/stable)](https://packagist.org/packages/nick-lai/associative-array)
 [![Total Downloads](https://poser.pugx.org/nick-lai/associative-array/downloads)](https://packagist.org/packages/nick-lai/associative-array)
-[![License](https://poser.pugx.org/nick-lai/associative-array/license)](https://packagist.org/packages/nick-lai/associative-array)
+
+**A lightweight associative array library for PHP.**
 
 # Table of Contents
 
@@ -22,6 +24,7 @@
     - [rightJoin()](#rightjoin)
     - [orderBy()](#orderby)
     - [groupBy()](#groupby)
+    - [make()](#make)
     - [first()](#first)
     - [last()](#last)
     - [count()](#count)
@@ -498,6 +501,30 @@ array (
     'category' => 'A',
     'price' => 30,
   ),
+)
+```
+
+### make()
+
+Create a new associative array instance.
+
+```php
+$data = [
+    ['id' => 1001, 'category' => 'C', 'price' => 10],
+    ['id' => 1002, 'category' => 'A', 'price' => 25],
+    ['id' => 1003, 'category' => 'B', 'price' => 10],
+];
+
+var_export(AssociativeArray::make($data)->first());
+```
+
+Result:
+
+```
+array (
+  'id' => 1001,
+  'category' => 'C',
+  'price' => 10,
 )
 ```
 
