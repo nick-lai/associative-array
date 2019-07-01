@@ -56,13 +56,13 @@ $data = [
     ['id' => 1005, 'category' => 'B', 'price' => 10],
 ];
 
-$assciativeArray = new AssociativeArray($data);
+$associativeArray = new AssociativeArray($data);
 
-$priceBetween0and20Rows = $assciativeArray->where(function ($row) {
+$priceBetween0and20Rows = $associativeArray->where(function ($row) {
     return 0 <= $row['price'] && $row['price'] <= 20;
 })->orderBy(['category', 'price']);
 
-$priceBetween15and25Rows = $assciativeArray->where(function ($row) {
+$priceBetween15and25Rows = $associativeArray->where(function ($row) {
     return 15 <= $row['price'] && $row['price'] <= 25;
 })->orderBy(['category', 'price'], ['asc', 'desc']);
 
