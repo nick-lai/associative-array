@@ -1,6 +1,6 @@
 {
     "name": "nick-lai/associative-array",
-    "description": "Associative array",
+    "description": "A lightweight associative array library for PHP.",
     "keywords": [
         "associative",
         "array",
