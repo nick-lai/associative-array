@@ -37,6 +37,17 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
+     * Create a new associative array instance.
+     *
+     * @param mixed $rows
+     * @return static
+     */
+    public static function make($rows = [])
+    {
+        return new static($rows);
+    }
+
+    /**
      * Get rows of selected columns.
      *
      * @param string|array $keys

@@ -13,6 +13,17 @@ use Traversable;
 
 class AssociativeArrayTest extends TestCase
 {
+    public function testMakeMethod()
+    {
+        $data = [
+            ['id' => 1001, 'category' => 'C', 'price' => 30],
+            ['id' => 1002, 'category' => 'A', 'price' => 25],
+            ['id' => 1003, 'category' => 'B', 'price' => 10],
+        ];
+
+        $this->assertEquals($data, AssociativeArray::make($data)->toArray());
+    }
+
     public function testSelect()
     {
         $associativeArray = new AssociativeArray([
