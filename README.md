@@ -718,7 +718,6 @@ Result:
 C
 A
 B
-
 ```
 
 ## License
