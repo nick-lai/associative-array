@@ -4,7 +4,7 @@
  * Associative array class.
  *
  * @author  Nick Lai <resxc13579@gmail.com>
- * @license https://opensource.org/licenses/mit-license.php MIT
+ * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/nick-lai/associative-array
  */
 
