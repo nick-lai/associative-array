@@ -156,23 +156,28 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
             $keys = (array)$keys;
         }
 
-        $i = 0;
-        $key2Direction = [];
-        $isStringDirections = is_string($directions);
+        $key2IsDesc = [];
 
-        foreach ($keys as $key) {
-            $key2Direction[$key] = $isStringDirections ? $directions : ($directions[$i] ?? 'asc');
-            $i++;
+        if (is_string($directions)) {
+            $isDesc = $directions === 'desc';
+            foreach ($keys as $key) {
+                $key2IsDesc[$key] = $isDesc;
+            }
+        } else {
+            $i = 0;
+            foreach ($keys as $key) {
+                $key2IsDesc[$key] = (($directions[$i++] ?? 'asc') === 'desc');
+            }
         }
 
         $result = $this->rows;
 
-        usort($result, function($a, $b) use ($keys, $key2Direction) {
+        usort($result, function($a, $b) use ($keys, $key2IsDesc) {
             foreach ($keys as $key) {
-                if ($cmpVal = $key2Direction[$key] === 'desc'
+                if ($comparedResult = $key2IsDesc[$key]
                         ? $b[$key] <=> $a[$key]
                         : $a[$key] <=> $b[$key]) {
-                    return $cmpVal;
+                    return $comparedResult;
                 }
             }
             return 0;
