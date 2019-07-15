@@ -1,5 +1,3 @@
-![banner](https://user-images.githubusercontent.com/7104395/60439675-c7300400-9c45-11e9-846a-e0819aeb74dd.png)
-
 AssociativeArray
 ===
 
@@ -475,7 +473,7 @@ $associativeArray = new AssociativeArray([
     ['id' => 1004, 'category' => 'A', 'price' => 30],
 ]);
 
-$result = $associativeArray->groupBy(['category', 'price'])->toArray();
+$result = $associativeArray->groupBy(['category', 'price']);
 
 var_export($result);
 ```
@@ -484,23 +482,44 @@ Result:
 
 ```
 array (
-  0 =>
+  'B' => 
   array (
-    'id' => 1001,
-    'category' => 'B',
-    'price' => 30,
+    30 => 
+    array (
+      0 => 
+      array (
+        'id' => 1001,
+        'category' => 'B',
+        'price' => 30,
+      ),
+      1 => 
+      array (
+        'id' => 1003,
+        'category' => 'B',
+        'price' => 30,
+      ),
+    ),
   ),
-  1 =>
+  'A' => 
   array (
-    'id' => 1002,
-    'category' => 'A',
-    'price' => 25,
-  ),
-  2 =>
-  array (
-    'id' => 1004,
-    'category' => 'A',
-    'price' => 30,
+    25 => 
+    array (
+      0 => 
+      array (
+        'id' => 1002,
+        'category' => 'A',
+        'price' => 25,
+      ),
+    ),
+    30 => 
+    array (
+      0 => 
+      array (
+        'id' => 1004,
+        'category' => 'A',
+        'price' => 30,
+      ),
+    ),
   ),
 )
 ```

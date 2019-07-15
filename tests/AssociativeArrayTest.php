@@ -164,23 +164,42 @@ class AssociativeArrayTest extends TestCase
 
     public function testGroupBy()
     {
-        $associativeArray = new AssociativeArray([
+        $data = [
             ['id' => 1001, 'category' => 'B', 'price' => 30],
             ['id' => 1002, 'category' => 'A', 'price' => 25],
             ['id' => 1003, 'category' => 'B', 'price' => 30],
             ['id' => 1004, 'category' => 'A', 'price' => 30],
-        ]);
+        ];
+
+        $associativeArray = new AssociativeArray($data);
 
         $this->assertEquals([
-            ['id' => 1001, 'category' => 'B', 'price' => 30],
-            ['id' => 1002, 'category' => 'A', 'price' => 25],
-            ['id' => 1004, 'category' => 'A', 'price' => 30],
-        ], $associativeArray->groupBy(['category', 'price'])->toArray());
+            'B' => [
+                30 => [
+                    ['id' => 1001, 'category' => 'B', 'price' => 30],
+                    ['id' => 1003, 'category' => 'B', 'price' => 30],
+                ],
+            ],
+            'A' => [
+                25 => [
+                    ['id' => 1002, 'category' => 'A', 'price' => 25],
+                ],
+                30 => [
+                    ['id' => 1004, 'category' => 'A', 'price' => 30],
+                ],
+            ],
+        ], $associativeArray->groupBy(['category', 'price']));
 
         $this->assertEquals([
-            ['id' => 1001, 'category' => 'B', 'price' => 30],
-            ['id' => 1002, 'category' => 'A', 'price' => 25],
-        ], $associativeArray->groupBy('category')->toArray());
+            'B' => [
+                ['id' => 1001, 'category' => 'B', 'price' => 30],
+                ['id' => 1003, 'category' => 'B', 'price' => 30],
+            ],
+            'A' => [
+                ['id' => 1002, 'category' => 'A', 'price' => 25],
+                ['id' => 1004, 'category' => 'A', 'price' => 30],
+            ],
+        ], $associativeArray->groupBy('category'));
     }
 
     public function testFirst()

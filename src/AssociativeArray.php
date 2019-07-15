@@ -190,7 +190,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      * Groups an associative array by keys.
      *
      * @param array|string $keys
-     * @return static
+     * @return array
      */
     public function groupBy($keys)
     {
@@ -198,16 +198,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
             $keys = (array)$keys;
         }
 
-        $result = [];
-
-        foreach ($this->rows as $row) {
-            $groupKey = implode(',', array_intersect_key($row, array_flip($keys)));
-            if (!isset($result[$groupKey])) {
-                $result[$groupKey] = $row;
-            }
-        }
-
-        return new static(array_values($result));
+        return self::quickGroup($this->rows, array_reverse($keys));
     }
 
     /**
@@ -342,6 +333,33 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
     public function offsetUnset($offset)
     {
         unset($this->rows[$offset]);
+    }
+
+    /**
+     * Quick grouping.
+     *
+     * @param array $rows
+     * @param array $keys
+     *
+     * @return array
+     */
+    protected static function quickGroup(array $rows, array $keys)
+    {
+        $result = [];
+
+        $groupKey = array_pop($keys);
+
+        foreach ($rows as $row) {
+            $result[$row[$groupKey]][] = $row;
+        }
+
+        if (count($keys)) {
+            foreach ($result as $groupBy => $groupedRows) {
+                $result[$groupBy] = self::quickGroup($groupedRows, $keys);
+            }
+        }
+
+        return $result;
     }
 
     /**
