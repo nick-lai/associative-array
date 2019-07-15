@@ -1,11 +1,11 @@
 AssociativeArray
 ===
 
-[![PHP 7 ready](https://php7ready.timesplinter.ch/nick-lai/associative-array/master/badge.svg)](https://travis-ci.org/nick-lai/associative-array)
 [![Build Status](https://travis-ci.org/nick-lai/associative-array.svg?branch=master)](https://travis-ci.org/nick-lai/associative-array)
 [![codecov](https://codecov.io/gh/nick-lai/associative-array/branch/master/graph/badge.svg)](https://codecov.io/gh/nick-lai/associative-array)
 [![Maintainability](https://api.codeclimate.com/v1/badges/619cef82d3eba2ea735c/maintainability)](https://codeclimate.com/github/nick-lai/associative-array/maintainability)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nick-lai/associative-array/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/nick-lai/associative-array/?branch=master)
+[![PHP 7 ready](https://php7ready.timesplinter.ch/nick-lai/associative-array/master/badge.svg)](https://travis-ci.org/nick-lai/associative-array)
 [![Packagist](https://img.shields.io/packagist/v/nick-lai/associative-array.svg)](https://packagist.org/packages/nick-lai/associative-array)
 [![Total Downloads](https://img.shields.io/packagist/dt/nick-lai/associative-array.svg?color=brightgreen)](https://packagist.org/packages/nick-lai/associative-array)
 
