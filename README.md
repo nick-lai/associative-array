@@ -59,97 +59,35 @@ $data = [
 
 $associativeArray = new AssociativeArray($data);
 
-$priceBetween0and20Rows = $associativeArray->where(function ($row) {
-    return 0 <= $row['price'] && $row['price'] <= 20;
-})->orderBy(['category', 'price']);
-
-$priceBetween15and25Rows = $associativeArray->where(function ($row) {
-    return 15 <= $row['price'] && $row['price'] <= 25;
-})->orderBy(['category', 'price'], ['asc', 'desc']);
-
-echo "Price between 0 and 20:" . PHP_EOL;
-print_r($priceBetween0and20Rows->toArray());
-echo "count(): " . $priceBetween0and20Rows->count() . PHP_EOL;
-echo "sum('price'): " . $priceBetween0and20Rows->sum('price') . PHP_EOL . PHP_EOL;
-
-echo "Price between 15 and 25:" . PHP_EOL;
-print_r($priceBetween15and25Rows->toArray());
-echo "count(): " . $priceBetween15and25Rows->count() . PHP_EOL;
-echo "sum('price'): " . $priceBetween15and25Rows->sum('price');
+var_export([
+    'first' => $associativeArray->first(),
+    'last' => $associativeArray->last(),
+    'count' => $associativeArray->count(),
+    'sum(price)' => $associativeArray->sum('price'),
+    'avg(price)' => $associativeArray->avg('price'),
+]);
 ```
 
 Result:
 
 ```
-Price between 0 and 20:
-Array
-(
-    [0] => Array
-        (
-            [id] => 1003   
-            [category] => A
-            [price] => 15  
-        )
-
-    [1] => Array
-        (
-            [id] => 1005   
-            [category] => B
-            [price] => 10  
-        )
-
-    [2] => Array
-        (
-            [id] => 1002
-            [category] => B
-            [price] => 15
-        )
-
-    [3] => Array
-        (
-            [id] => 1001
-            [category] => C
-            [price] => 20
-        )
-
+array (
+  'first' =>
+  array (
+    'id' => 1001,
+    'category' => 'C',
+    'price' => 20,
+  ),
+  'last' =>
+  array (
+    'id' => 1005,
+    'category' => 'B',
+    'price' => 10,
+  ),
+  'count' => 5,
+  'sum(price)' => 85,
+  'avg(price)' => 17,
 )
-count(): 4
-sum('price'): 60
-
-Price between 15 and 25:
-Array
-(
-    [0] => Array
-        (
-            [id] => 1004
-            [category] => A
-            [price] => 25
-        )
-
-    [1] => Array
-        (
-            [id] => 1003
-            [category] => A
-            [price] => 15
-        )
-
-    [2] => Array
-        (
-            [id] => 1002
-            [category] => B
-            [price] => 15
-        )
-
-    [3] => Array
-        (
-            [id] => 1001
-            [category] => C
-            [price] => 20
-        )
-
-)
-count(): 4
-sum('price'): 75
 ```
 
 ### select()
