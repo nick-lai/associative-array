@@ -461,6 +461,45 @@ array (
 )
 ```
 
+Keep index
+
+```php
+$associativeArray = new AssociativeArray([
+    'X' => ['id' => 1001, 'category' => 'C', 'price' => 10],
+    'Y' => ['id' => 1002, 'category' => 'A', 'price' => 25],
+    'Z' => ['id' => 1003, 'category' => 'B', 'price' => 10],
+]);
+
+$result = $associativeArray->orderBy('category', 'asc', true)->toArray();
+
+var_export($result);
+```
+
+Result:
+
+```php
+array (
+  'Y' =>
+  array (
+    'id' => 1002,
+    'category' => 'A',
+    'price' => 25,
+  ),
+  'Z' =>
+  array (
+    'id' => 1003,
+    'category' => 'B',
+    'price' => 10,
+  ),
+  'X' =>
+  array (
+    'id' => 1001,
+    'category' => 'C',
+    'price' => 10,
+  ),
+)
+```
+
 ### groupBy()
 
 Groups an associative array by keys.
