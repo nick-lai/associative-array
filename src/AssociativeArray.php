@@ -148,9 +148,10 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param string|array $keys
      * @param string|array $directions
+     * @param bool $keepIndexAssoc
      * @return static
      */
-    public function orderBy($keys, $directions = 'asc')
+    public function orderBy($keys, $directions = 'asc', bool $keepIndexAssoc = false)
     {
         if (!is_array($keys)) {
             $keys = (array)$keys;
@@ -172,8 +173,12 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
 
         $result = $this->rows;
 
-        usort($result, function($a, $b) use ($keys, $key2IsDesc) {
+        $sortFunc = $keepIndexAssoc ? 'uasort' : 'usort';
+
+        $sortFunc($result, function($a, $b) use ($keys, $key2IsDesc) {
             foreach ($keys as $key) {
+                // Return comparison result if `$a[$key]` not equal to `$b[$key]` else continue next comparing
+                // Use the spaceship operator to compare
                 if ($comparedResult = $key2IsDesc[$key]
                         ? $b[$key] <=> $a[$key]
                         : $a[$key] <=> $b[$key]) {

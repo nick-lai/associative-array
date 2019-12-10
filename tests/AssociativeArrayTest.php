@@ -160,6 +160,13 @@ class AssociativeArrayTest extends TestCase
             ['id' => 1002, 'category' => 'A', 'price' => 25],
             ['id' => 1001, 'category' => 'C', 'price' => 10],
         ], $associativeArray->orderBy('id', 'desc')->toArray());
+
+        $this->assertEquals([
+            3 => ['id' => 1004, 'category' => 'C', 'price' => 10],
+            2 => ['id' => 1003, 'category' => 'B', 'price' => 10],
+            1 => ['id' => 1002, 'category' => 'A', 'price' => 25],
+            0 => ['id' => 1001, 'category' => 'C', 'price' => 10],
+        ], $associativeArray->orderBy('id', 'desc', true)->toArray());
     }
 
     public function testGroupBy()
