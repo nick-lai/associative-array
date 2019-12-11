@@ -188,17 +188,17 @@ Inner join rows
 
 ```php
 $associativeArray = new AssociativeArray([
-    ['id' => 1001, 'category' => 'C', 'price' => 30],
-    ['id' => 1002, 'category' => 'A', 'price' => 25],
-    ['id' => 1003, 'category' => 'B', 'price' => 10],
-    ['id' => 1004, 'category' => 'X', 'price' => 60],
+    1001 => ['id' => 1001, 'category' => 'C', 'price' => 30],
+    1002 => ['id' => 1002, 'category' => 'A', 'price' => 25],
+    1003 => ['id' => 1003, 'category' => 'B', 'price' => 10],
+    1004 => ['id' => 1004, 'category' => 'X', 'price' => 60],
 ]);
 
 $categories = [
-    ['category' => 'A', 'desc' => 'A desc'],
-    ['category' => 'B', 'desc' => 'B desc'],
-    ['category' => 'C', 'desc' => 'C desc'],
-    ['category' => 'D', 'desc' => 'D desc'],
+    'A' => ['category' => 'A', 'desc' => 'A desc'],
+    'B' => ['category' => 'B', 'desc' => 'B desc'],
+    'C' => ['category' => 'C', 'desc' => 'C desc'],
+    'D' => ['category' => 'D', 'desc' => 'D desc'],
 ];
 
 $result = $associativeArray->innerJoin($categories, function ($leftRow, $rightRow) {
@@ -212,21 +212,21 @@ Result:
 
 ```
 array (
-  0 =>
+  1001 =>
   array (
     'id' => 1001,
     'category' => 'C',
     'price' => 30,
     'desc' => 'C desc',
   ),
-  1 =>
+  1002 =>
   array (
     'id' => 1002,
     'category' => 'A',
     'price' => 25,
     'desc' => 'A desc',
   ),
-  2 =>
+  1003 =>
   array (
     'id' => 1003,
     'category' => 'B',
@@ -242,17 +242,17 @@ Left join rows
 
 ```php
 $associativeArray = new AssociativeArray([
-    ['id' => 1001, 'category' => 'C', 'price' => 30],
-    ['id' => 1002, 'category' => 'A', 'price' => 25],
-    ['id' => 1003, 'category' => 'B', 'price' => 10],
-    ['id' => 1004, 'category' => 'X', 'price' => 60],
+    1001 => ['id' => 1001, 'category' => 'C', 'price' => 30],
+    1002 => ['id' => 1002, 'category' => 'A', 'price' => 25],
+    1003 => ['id' => 1003, 'category' => 'B', 'price' => 10],
+    1004 => ['id' => 1004, 'category' => 'X', 'price' => 60],
 ]);
 
 $categories = [
-    ['category' => 'A', 'desc' => 'A desc'],
-    ['category' => 'B', 'desc' => 'B desc'],
-    ['category' => 'C', 'desc' => 'C desc'],
-    ['category' => 'D', 'desc' => 'D desc'],
+    'A' => ['category' => 'A', 'desc' => 'A desc'],
+    'B' => ['category' => 'B', 'desc' => 'B desc'],
+    'C' => ['category' => 'C', 'desc' => 'C desc'],
+    'D' => ['category' => 'D', 'desc' => 'D desc'],
 ];
 
 $result = $associativeArray->leftJoin($categories, function ($leftRow, $rightRow) {
@@ -266,28 +266,28 @@ Result:
 
 ```
 array (
-  0 =>
+  1001 =>
   array (
     'id' => 1001,      
     'category' => 'C', 
     'price' => 30,     
     'desc' => 'C desc',
   ),
-  1 =>
+  1002 =>
   array (
     'id' => 1002,
     'category' => 'A',
     'price' => 25,
     'desc' => 'A desc',
   ),
-  2 =>
+  1003 =>
   array (
     'id' => 1003,
     'category' => 'B',
     'price' => 10,
     'desc' => 'B desc',
   ),
-  3 =>
+  1004 =>
   array (
     'id' => 1004,
     'category' => 'X',
@@ -303,17 +303,17 @@ Right join rows
 
 ```php
 $associativeArray = new AssociativeArray([
-    ['id' => 1001, 'category' => 'C', 'price' => 30],
-    ['id' => 1002, 'category' => 'A', 'price' => 25],
-    ['id' => 1003, 'category' => 'B', 'price' => 10],
-    ['id' => 1004, 'category' => 'X', 'price' => 60],
+    1001 => ['id' => 1001, 'category' => 'C', 'price' => 30],
+    1002 => ['id' => 1002, 'category' => 'A', 'price' => 25],
+    1003 => ['id' => 1003, 'category' => 'B', 'price' => 10],
+    1004 => ['id' => 1004, 'category' => 'X', 'price' => 60],
 ]);
 
 $categories = [
-    ['category' => 'A', 'desc' => 'A desc'],
-    ['category' => 'B', 'desc' => 'B desc'],
-    ['category' => 'C', 'desc' => 'C desc'],
-    ['category' => 'D', 'desc' => 'D desc'],
+    'A' => ['category' => 'A', 'desc' => 'A desc'],
+    'B' => ['category' => 'B', 'desc' => 'B desc'],
+    'C' => ['category' => 'C', 'desc' => 'C desc'],
+    'D' => ['category' => 'D', 'desc' => 'D desc'],
 ];
 
 $result = $associativeArray->rightJoin($categories, function ($leftRow, $rightRow) {
@@ -327,28 +327,28 @@ Result:
 
 ```
 array (
-  0 =>
+  'A' =>
   array (
     'category' => 'A',
     'desc' => 'A desc',
     'id' => 1002,
     'price' => 25,
   ),
-  1 =>
+  'B' =>
   array (
     'category' => 'B',
     'desc' => 'B desc',
     'id' => 1003,
     'price' => 10,
   ),
-  2 =>
+  'C' =>
   array (
     'category' => 'C',
     'desc' => 'C desc',
     'id' => 1001,
     'price' => 30,
   ),
-  3 =>
+  'D' =>
   array (
     'category' => 'D',
     'desc' => 'D desc',
