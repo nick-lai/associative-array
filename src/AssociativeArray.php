@@ -88,10 +88,10 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
     {
         $result = [];
 
-        foreach ($this->rows as $leftRow) {
+        foreach ($this->rows as $index => $leftRow) {
             foreach ($rows as $rightRow) {
                 if ($on($leftRow, $rightRow)) {
-                    $result[] = $leftRow + $rightRow;
+                    $result[$index] = $leftRow + $rightRow;
                     break;
                 }
             }
@@ -117,7 +117,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
 
         $result = [];
 
-        foreach ($this->rows as $leftRow) {
+        foreach ($this->rows as $index => $leftRow) {
             $row = $leftRow + $nullRightRow;
             foreach ($rows as $rightRow) {
                 if ($on($leftRow, $rightRow)) {
@@ -125,7 +125,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
                     break;
                 }
             }
-            $result[] = $row;
+            $result[$index] = $row;
         }
 
         return self::make($result);
