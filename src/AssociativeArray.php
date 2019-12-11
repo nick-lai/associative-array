@@ -61,7 +61,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
 
         $keys = array_flip($keys);
 
-        return new static(array_map(function($row) use ($keys) {
+        return self::make(array_map(function($row) use ($keys) {
             return array_intersect_key($row, $keys);
         }, $this->rows));
     }
@@ -74,7 +74,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      */
     public function where(callable $callback)
     {
-        return new static(array_filter($this->rows, $callback, ARRAY_FILTER_USE_BOTH));
+        return self::make(array_filter($this->rows, $callback, ARRAY_FILTER_USE_BOTH));
     }
 
     /**
@@ -97,7 +97,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
             }
         }
 
-        return new static($result);
+        return self::make($result);
     }
 
     /**
@@ -111,7 +111,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
     {
         $nullRightRow = [];
 
-        foreach ((new static($rows))->first() as $key => $value) {
+        foreach (self::make($rows)->first() as $key => $value) {
             $nullRightRow[$key] = null;
         }
 
@@ -128,7 +128,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
             $result[] = $row;
         }
 
-        return new static($result);
+        return self::make($result);
     }
 
     /**
@@ -140,7 +140,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      */
     public function rightJoin($rows, callable $on)
     {
-        return (new static($rows))->leftJoin($this->rows, $on);
+        return self::make($rows)->leftJoin($this->rows, $on);
     }
 
     /**
@@ -188,7 +188,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
             return 0;
         });
 
-        return new static($result);
+        return self::make($result);
     }
 
     /**
