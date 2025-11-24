@@ -422,7 +422,11 @@ class AssociativeArrayTest extends TestCase
         $associativeArray = new AssociativeArray;
         $class = new ReflectionClass($associativeArray);
         $method = $class->getMethod('getAssociativeRows');
-        $method->setAccessible(true);
+
+        // https://www.php.net/manual/en/reflectionmethod.setaccessible.php
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $data = [
             ['id' => 1001, 'category' => 'C', 'price' => 10],
