@@ -241,6 +241,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->rows);
@@ -284,8 +285,9 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Get an iterator for the rows.
      *
-     * @return \ArrayIterator
+     * @return Traversable
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->rows);
@@ -297,6 +299,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      * @param mixed $offset
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->rows);
@@ -308,6 +311,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      * @param mixed $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->rows[$offset];
@@ -320,6 +324,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      * @param mixed $row
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $row)
     {
         if (is_null($offset)) {
@@ -335,6 +340,7 @@ class AssociativeArray implements ArrayAccess, Countable, IteratorAggregate
      * @param string $offset
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->rows[$offset]);
